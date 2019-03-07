@@ -8,6 +8,28 @@ class Body extends React.Component{
     this.addNewPost = this.addNewPost.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.deletePost = this.deletePost.bind(this)
+    this.handleUpdate = this.handleUpdate.bind(this)
+    this.updatePost = this.updatePost.bind(this)
+  }
+
+  handleUpdate(post){
+    fetch('http://localhost:3000/api/v1/posts/'+ post,
+    {
+      method: 'PUT',
+      body: JSON.stringify({post: post}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((respone) => {this.updatePost(post)})
+  }
+
+  updatePost(post){
+    let newPostList = this.state.posts.filter((p) => p.id !== post.id)
+
+    newPostList.push(post)
+    this.setState({
+      posts: newPostList
+    })
   }
 
   handleDelete(id){
@@ -67,7 +89,7 @@ class Body extends React.Component{
     return(
       <div>
         <NewPost handleFormSubmit={this.handleFormSubmit} />
-        <AllPosts posts={this.state.posts} handleDelete={this.handleDelete}/>
+        <AllPosts posts={this.state.posts} handleDelete={this.handleDelete} handleUpdate={this.handleUpdate}/>
       </div>
     )
   }

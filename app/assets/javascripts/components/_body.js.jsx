@@ -6,6 +6,28 @@ class Body extends React.Component{
     }
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.addNewPost = this.addNewPost.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    this.deletePost = this.deletePost.bind(this)
+  }
+
+  handleDelete(id){
+    console.log("http://localhost:3000/api/v1/posts/"+ id);
+    fetch("http://localhost:3000/api/v1/posts/"+ id,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      this.deletePost(id)
+    }) 
+  }
+
+  deletePost(id){
+    updatePostsList = this.state.posts.filter((post) => post.id !== id)
+    this.setState({
+      posts: updatePostsList
+    })
   }
 
   handleFormSubmit(title, description){
@@ -45,7 +67,7 @@ class Body extends React.Component{
     return(
       <div>
         <NewPost handleFormSubmit={this.handleFormSubmit} />
-        <AllPosts posts={this.state.posts} />
+        <AllPosts posts={this.state.posts} handleDelete={this.handleDelete}/>
       </div>
     )
   }

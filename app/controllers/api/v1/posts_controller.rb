@@ -6,9 +6,11 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     post = Post.create(post_params)
+    render json: post
   end
 
   def destroy
+    # byebug
     Post.destroy(params[:id])
   end
 
